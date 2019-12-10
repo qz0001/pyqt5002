@@ -6,17 +6,18 @@
 #
 # WARNING! All changes made in this file will be lost!
 import sys
+from PyQt5.QtWidgets import QApplication,QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")  #MainWindow是将来传入的主窗体
-        MainWindow.resize(800, 600)              #呵呵设置这个主窗体大小，上面是设置名字
-        self.centralwidget = QtWidgets.QWidget(MainWindow)#在主窗体中创建控制窗口
-        self.centralwidget.setObjectName("centralwidget") #设置控制窗体的名字
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)#在控制窗体中创建布局窗体
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(330, 250, 361, 500))#这应该是布局窗体的绝对位置和大小？
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")  #妈的，布局窗体还有名字
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)#创建控制窗口
+        self.centralwidget.setObjectName("centralwidget")
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)#创建布局窗口
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(330, 250, 361, 171))
+        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)#1.在布局窗口内创建布局
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)    #控件距离布局线距离为0
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -38,7 +39,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.line_2)                     #5.1垂直分割线-2加入加入布局
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)                        #6.上面创建弹簧，下面用addItem把弹簧加入布局
-        MainWindow.setCentralWidget(self.centralwidget) #主窗口设置里面的窗口？
+        MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)                    #7.创建菜单
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 23))
         self.menubar.setObjectName("menubar")
@@ -47,8 +48,8 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)                        #8.1启用状态栏
 
-        self.retranslateUi(MainWindow)       #调用重命名函数
-        QtCore.QMetaObject.connectSlotsByName(MainWindow) #不懂？？？
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -57,9 +58,9 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv) #创建程序
-    mainWindow=QtWidgets.QMainWindow()   #创建主窗口
-    ui=Ui_MainWindow()                  #实例化类
-    ui.setupUi(mainWindow)            #把主窗口传入，用setupUi函数来装饰
-    mainWindow.show()                #显示主窗口
-    sys.exit(app.exec_())           #程序循环？
+    app = QApplication(sys.argv)
+    mainWindow=QMainWindow()
+    ui=Ui_MainWindow()
+    ui.setupUi(mainWindow)
+    mainWindow.show()
+    sys.exit(app.exec_())

@@ -15,12 +15,13 @@ class ouwai_table(QTableWidget):
         self.resize(800,500)  #设置表格尺寸
 
         #===1:创建初始表格
-        self.setColumnCount(6)
-        self.setRowCount(5)
+        self.setColumnCount(24)
+        self.setRowCount(6)
         #self.setShowGrid(False) #是否需要显示网格
 
         self.settableHeader()
         self.inputcelldata()
+        #self.settableInitData()
         self.settableSelectMode()
         #self.settableHeaderFontColor()
         #self.setCellFontColor()
@@ -62,7 +63,7 @@ class ouwai_table(QTableWidget):
     #===2：设置表格的表头名称
     def settableHeader(self):
         #columnname = ['A','B','C','D','E']
-        columnname = ['姓名', '性别', '年龄', '身高', '照片','简介']
+        columnname = ['姓名', '性别', '年龄', '身高', '照片','简介','备注']
         #rowname = ['a','b','c','d','e']
         self.setHorizontalHeaderLabels(columnname)
         #self.setVerticalHeaderLabels(rowname)
@@ -268,7 +269,7 @@ class UpdateData(QThread):
 if __name__ == '__main__':
     # 实例化表格
     app = QApplication(sys.argv)
-    myTable = MyTable()
+    myTable = ouwai_table()
     # 启动更新线程
     #update_data_thread = UpdateData()
     # update_data_thread.update_date.connect(myTable.update_item_data)  # 链接信号

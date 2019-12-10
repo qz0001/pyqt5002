@@ -5,42 +5,42 @@ from PyQt5 import QtCore,QtGui,QtWidgets
 import sys
 import qtawesome
 from new_jingmeijiemian import MainWinui_ouwai_tabel,MainWinui_ouwai_tab_widget
-class QTitleLabel(QtWidgets.QLabel):  #这个地方是重写了标签类，不对，是原有的标签类还在，这是自定义的标签类
+class QTitleLabel(QtWidgets.QLabel):
     """
     新建标题栏标签类
     """
     def __init__(self, *args):
-        super(QTitleLabel, self).__init__(*args) #继承原有标签类属性
-        self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)  #设置这种标签栏的 位置模式
-        self.setFixedHeight(30)                                          #设置这种标签栏的 高度
+        super(QTitleLabel, self).__init__(*args)
+        self.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.setFixedHeight(30)
 
 
-class QTitleButton(QtWidgets.QPushButton):#自定义按钮类
+class QTitleButton(QtWidgets.QPushButton):
     """
     新建标题栏按钮类
     """
     def __init__(self, *args):
-        super(QTitleButton, self).__init__(*args)#继承按钮类的属性
-        self.setFont(QtGui.QFont("Webdings")) # 特殊字体以不借助图片实现最小化最大化和关闭按钮？
+        super(QTitleButton, self).__init__(*args)
+        self.setFont(QtGui.QFont("Webdings")) # 特殊字体以不借助图片实现最小化最大化和关闭按钮
         self.setFixedWidth(40)
 
 
-class MainUi(QtWidgets.QMainWindow):#   主窗体类
-    def __init__(self):  #初始化类
+class MainUi(QtWidgets.QMainWindow):
+    def __init__(self):
         #super(MainUi, self).__init__()
         super(MainUi, self).__init__(None, QtCore.Qt.FramelessWindowHint)  # 设置为顶级窗口，无边框
 
-        self.init_ui()#调用初始化函数
+        self.init_ui()
 
-    def init_ui(self):#初始化函数
-        self._padding = 5 # 设置边界（边框？）宽度为5
+    def init_ui(self):
+        self._padding = 5 # 设置边界宽度为5
 
-        self.setMinimumWidth(500)#设置最小宽度
+        self.setMinimumWidth(500)
         self.setMouseTracking(True)  # 设置widget鼠标跟踪
         self.initDrag()  # 设置鼠标跟踪判断默认值
         #self.setFixedSize(1024, 700)
 
-        self.main_widget = QtWidgets.QWidget()  # 创建窗口主部件（组件？）
+        self.main_widget = QtWidgets.QWidget()  # 创建窗口主部件
         # self.main_widget.setStyleSheet(
         #     '''QWidget{background:#00f0f0;}''')
 
@@ -231,7 +231,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.right_recommend_layout.addWidget(self.recommend_button_6)
         spacer001 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.right_recommend_layout.addItem(spacer001)  # 记住这里是用addItem，，，不是用addWidget
-        '''弹簧排在第二行'''
+        '''排在第二行'''
         self.right_layout.addWidget(self.right_recommend_widget, 1, 0, 1, 9,QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)  # 装入网格布局
         '''一号水平线——排在第三行'''
         '''水平水平分割线'''
@@ -269,53 +269,53 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.right_search_layout.setContentsMargins(0, 0, 0, 0)#设置页边距为0
         self.right_search_layout.setSpacing(0)                 #设置控件间隔为0
 
-        self.label_01=  QtWidgets.QLabel("受理日期")
+        self.label_01=  QtWidgets.QLabel("今日推荐")
         self.label_01.setObjectName("label_search")
-        self.label_02 = QtWidgets.QLabel("预约日期")
+        self.label_02 = QtWidgets.QLabel("今日推荐")
         self.label_02.setObjectName("label_search")
-        self.label_03 = QtWidgets.QLabel("到诊日期")
+        self.label_03 = QtWidgets.QLabel("今日推荐")
         self.label_03.setObjectName("label_search")
-        self.label_04 = QtWidgets.QLabel("登记日期")
+        self.label_04 = QtWidgets.QLabel("今日推荐")
         self.label_04.setObjectName("label_search")
-        self.label_05 = QtWidgets.QLabel("至")
+        self.label_05 = QtWidgets.QLabel("今日推荐")
         self.label_05.setObjectName("label_search")
-        self.label_06 = QtWidgets.QLabel("至")
+        self.label_06 = QtWidgets.QLabel("今日推荐")
         self.label_06.setObjectName("label_search")
-        self.label_07 = QtWidgets.QLabel("至")
+        self.label_07 = QtWidgets.QLabel("今日推荐")
         self.label_07.setObjectName("label_search")
-        self.label_08 = QtWidgets.QLabel("至")
+        self.label_08 = QtWidgets.QLabel("今日推荐")
         self.label_08.setObjectName("label_search")
-        self.label_09 = QtWidgets.QLabel("受理人员")
+        self.label_09 = QtWidgets.QLabel("今日推荐")
         self.label_09.setObjectName("label_search")
-        self.label_10 = QtWidgets.QLabel("客户卡号")
+        self.label_10 = QtWidgets.QLabel("今日推荐")
         self.label_10.setObjectName("label_search")
-        self.label_11 = QtWidgets.QLabel("受理电话")
+        self.label_11 = QtWidgets.QLabel("今日推荐")
         self.label_11.setObjectName("label_search")
-        self.label_12 = QtWidgets.QLabel("开发人员")
+        self.label_12 = QtWidgets.QLabel("今日推荐")
         self.label_12.setObjectName("label_search")
-        self.label_13 = QtWidgets.QLabel("部门")
+        self.label_13 = QtWidgets.QLabel("今日推荐")
         self.label_13.setObjectName("label_search")
-        self.label_14 = QtWidgets.QLabel("姓名")
+        self.label_14 = QtWidgets.QLabel("今日推荐")
         self.label_14.setObjectName("label_search")
-        self.label_15 = QtWidgets.QLabel("咨询项目")
+        self.label_15 = QtWidgets.QLabel("今日推荐")
         self.label_15.setObjectName("label_search")
-        self.label_16 = QtWidgets.QLabel("受理内容")
+        self.label_16 = QtWidgets.QLabel("今日推荐")
         self.label_16.setObjectName("label_search")
-        self.label_17 = QtWidgets.QLabel("受理类型")
+        self.label_17 = QtWidgets.QLabel("今日推荐")
         self.label_17.setObjectName("label_search")
-        self.label_18 = QtWidgets.QLabel("开发渠道")
+        self.label_18 = QtWidgets.QLabel("今日推荐")
         self.label_18.setObjectName("label_search")
-        self.label_19 = QtWidgets.QLabel("受理工具")
+        self.label_19 = QtWidgets.QLabel("今日推荐")
         self.label_19.setObjectName("label_search")
-        self.label_20 = QtWidgets.QLabel("信息来源")
+        self.label_20 = QtWidgets.QLabel("今日推荐")
         self.label_20.setObjectName("label_search")
-        self.label_21 = QtWidgets.QLabel("客户状态")
+        self.label_21 = QtWidgets.QLabel("今日推荐")
         self.label_21.setObjectName("label_search")
-        self.label_22 = QtWidgets.QLabel("渠道名称")
+        self.label_22 = QtWidgets.QLabel("今日推荐")
         self.label_22.setObjectName("label_search")
-        self.label_23 = QtWidgets.QLabel("状态")
+        self.label_23 = QtWidgets.QLabel("今日推荐")
         self.label_23.setObjectName("label_search")
-        self.label_24 = QtWidgets.QLabel("QQ")
+        self.label_24 = QtWidgets.QLabel("今日推荐")
         self.label_24.setObjectName("label_search")
         self.comboBox_01 = QtWidgets.QComboBox()
         self.comboBox_01.setObjectName("comboBox_search")
@@ -483,7 +483,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.ouwai_tabel_widget.setMinimumSize(1200,260)
         self.ouwai_tabel_widget_layout=QtWidgets.QHBoxLayout()
         self.ouwai_tabel_widget.setLayout(self.ouwai_tabel_widget_layout)
-        self.ouwai_tabel= MainWinui_ouwai_tabel.ouwai_table()#在部件中创建表格 #这是从外部引入的模块
+        self.ouwai_tabel= MainWinui_ouwai_tabel.ouwai_table()#在部件中创建表格
         self.ouwai_tabel_widget_layout.addWidget(self.ouwai_tabel)
         self.ouwai_tabel_widget_layout.setContentsMargins(0, 0, 0, 0)  # 设置页边距为0
         self.ouwai_tabel_widget_layout.setSpacing(0)  # 设置控件间隔为0
@@ -505,7 +505,104 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.ouwai_tab_widget_layout.setSpacing(0)#设置控件间距
         self.right_layout.addWidget(self.ouwai_tab_widget,7, 0, 1,6)
 
-        """设置关闭大小按钮"""
+        # '''原始搜索模块——排在第8行'''
+        # self.right_bar_widget = QtWidgets.QWidget()  # 右侧顶部搜索框部件
+        # self.right_bar_layout = QtWidgets.QGridLayout()  # 右侧顶部搜索框网格布局
+        # self.right_bar_widget.setLayout(self.right_bar_layout) #网格布局加入到右侧窗体中
+        # self.search_icon = QtWidgets.QLabel(chr(0xf002) + ' ' + '搜索  ')
+        # self.search_icon.setFont(qtawesome.font('fa', 16))
+        # self.right_bar_widget_search_input = QtWidgets.QLineEdit()
+        # self.right_bar_widget_search_input.setPlaceholderText("输入歌手、歌曲或用户，回车进行搜索")
+        # self.right_bar_layout.addWidget(self.search_icon, 1, 0, 1, 1)
+        # '''搜索模块标签第8行'''
+        # self.right_bar_layout.addWidget(self.right_bar_widget_search_input, 1, 1, 1, 8)
+        # '''原始搜索模块加入第8行'''
+        # self.right_layout.addWidget(self.right_bar_widget, 10, 0, 1, 9)  # 把搜索窗体加入网格布局的第二行，占据9行，索索窗体内部用的也是网格布局
+
+
+        #self.right_layout.addWidget(self.right_recommend_label,3, 0, 1,3,QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)  #装入网格布局
+
+        # '''原始歌曲和歌单排在低'''
+        #
+        # self.right_newsong_lable = QtWidgets.QLabel("最新歌曲")
+        # self.right_newsong_lable.setObjectName('right_lable')
+        #
+        # self.right_playlist_lable = QtWidgets.QLabel("热门歌单")
+        # self.right_playlist_lable.setObjectName('right_lable')
+        #
+        # self.right_newsong_widget = QtWidgets.QWidget()  # 最新歌曲部件
+        # self.right_newsong_layout = QtWidgets.QGridLayout()  # 最新歌曲部件网格布局
+        # self.right_newsong_widget.setLayout(self.right_newsong_layout)
+        #
+        # self.newsong_button_1 = QtWidgets.QPushButton("夜机      陈慧娴      永远的朋友      03::29")
+        # self.newsong_button_2 = QtWidgets.QPushButton("夜机      陈慧娴      永远的朋友      03::29")
+        # self.newsong_button_3 = QtWidgets.QPushButton("夜机      陈慧娴      永远的朋友      03::29")
+        # self.newsong_button_4 = QtWidgets.QPushButton("夜机      陈慧娴      永远的朋友      03::29")
+        # self.newsong_button_5 = QtWidgets.QPushButton("夜机      陈慧娴      永远的朋友      03::29")
+        # self.newsong_button_6 = QtWidgets.QPushButton("夜机      陈慧娴      永远的朋友      03::29")
+        # self.right_newsong_layout.addWidget(self.newsong_button_1, 0, 1, )
+        # self.right_newsong_layout.addWidget(self.newsong_button_2, 1, 1, )
+        # self.right_newsong_layout.addWidget(self.newsong_button_3, 2, 1, )
+        # self.right_newsong_layout.addWidget(self.newsong_button_4, 3, 1, )
+        # self.right_newsong_layout.addWidget(self.newsong_button_5, 4, 1, )
+        # self.right_newsong_layout.addWidget(self.newsong_button_6, 5, 1, )
+        # self.right_playlist_widget = QtWidgets.QWidget()  # 播放歌单部件
+        # self.right_playlist_layout = QtWidgets.QGridLayout()  # 播放歌单网格布局
+        # self.right_playlist_widget.setLayout(self.right_playlist_layout)
+        #
+        # self.playlist_button_1 = QtWidgets.QToolButton()
+        # self.playlist_button_1.setText("无法释怀的整天循环音乐…")
+        # self.playlist_button_1.setIcon(QtGui.QIcon('./p1.jpg'))
+        # self.playlist_button_1.setIconSize(QtCore.QSize(100, 100))
+        # self.playlist_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        #
+        # self.playlist_button_2 = QtWidgets.QToolButton()
+        # self.playlist_button_2.setText("不需要歌词,也可以打动你的心")
+        # self.playlist_button_2.setIcon(QtGui.QIcon('./p2.jpg'))
+        # self.playlist_button_2.setIconSize(QtCore.QSize(100, 100))
+        # self.playlist_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        #
+        # self.playlist_button_3 = QtWidgets.QToolButton()
+        # self.playlist_button_3.setText("那些你熟悉又不知道名字…")
+        # self.playlist_button_3.setIcon(QtGui.QIcon('./p3.jpg'))
+        # self.playlist_button_3.setIconSize(QtCore.QSize(100, 100))
+        # self.playlist_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        #
+        # self.playlist_button_4 = QtWidgets.QToolButton()
+        # self.playlist_button_4.setText("那些只听前奏就中毒的英文歌")
+        # self.playlist_button_4.setIcon(QtGui.QIcon('./p4.jpg'))
+        # self.playlist_button_4.setIconSize(QtCore.QSize(100, 100))
+        # self.playlist_button_4.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        #
+        # self.right_playlist_layout.addWidget(self.playlist_button_1, 0, 0)
+        # self.right_playlist_layout.addWidget(self.playlist_button_2, 0, 1)
+        # self.right_playlist_layout.addWidget(self.playlist_button_3, 1, 0)
+        # self.right_playlist_layout.addWidget(self.playlist_button_4, 1, 1)
+        # self.right_layout.addWidget(self.right_newsong_lable, 11, 0, 1, 5)
+        # self.right_layout.addWidget(self.right_playlist_lable, 11, 5, 1, 4)
+        # self.right_layout.addWidget(self.right_newsong_widget, 12, 0, 1, 5)
+        # self.right_layout.addWidget(self.right_playlist_widget, 12, 5, 1, 4)
+        # self.right_process_bar = QtWidgets.QProgressBar()  # 播放进度部件
+        # self.right_process_bar.setValue(49)
+        # self.right_process_bar.setFixedHeight(3)  # 设置进度条高度
+        # self.right_process_bar.setTextVisible(False)  # 不显示进度条文字
+        #
+        # self.right_playconsole_widget = QtWidgets.QWidget()  # 播放控制部件
+        # self.right_playconsole_layout = QtWidgets.QGridLayout()  # 播放控制部件网格布局层
+        # self.right_playconsole_widget.setLayout(self.right_playconsole_layout)
+        #
+        # self.console_button_1 = QtWidgets.QPushButton(qtawesome.icon('fa.backward', color='#F76677'), "")
+        # self.console_button_2 = QtWidgets.QPushButton(qtawesome.icon('fa.forward', color='#F76677'), "")
+        # self.console_button_3 = QtWidgets.QPushButton(qtawesome.icon('fa.pause', color='#F76677', font=18), "")
+        # self.console_button_3.setIconSize(QtCore.QSize(30, 30))
+        #
+        # self.right_playconsole_layout.addWidget(self.console_button_1, 0, 0)
+        # self.right_playconsole_layout.addWidget(self.console_button_2, 0, 2)
+        # self.right_playconsole_layout.addWidget(self.console_button_3, 0, 1)
+        # self.right_playconsole_layout.setAlignment(QtCore.Qt.AlignCenter)  # 设置布局内部件居中显示
+        #
+        # self.right_layout.addWidget(self.right_process_bar, 13, 0, 1, 9)
+        # self.right_layout.addWidget(self.right_playconsole_widget, 14, 0, 1, 9)
         self.left_close.setFixedSize(15, 15)  # 设置关闭按钮的大小
         self.left_visit.setFixedSize(15, 15)  # 设置按钮大小
         self.left_mini.setFixedSize(15, 15)  # 设置最小化按钮大小
@@ -624,7 +721,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
                 border-right:1px solid gray;
             }
             QTitleLabel#right_lable:hover{background:#f5f5f5;}
-        ''')# 标签设置为红色？
+        ''')# 标签设置为红色
 
 
 
@@ -837,7 +934,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self._right_drag = False
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    app.setStyleSheet(open("./UnFrameStyle.qss").read()) #读取css样式文件
+    app.setStyleSheet(open("./UnFrameStyle.qss").read())
     gui = MainUi()
     gui.setMinMaxButtons(True)
     gui.setCloseButton(True)
