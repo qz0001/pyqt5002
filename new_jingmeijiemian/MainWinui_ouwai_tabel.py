@@ -4,7 +4,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
 import time
-
+import pymysql
+from functools import partial
 #基于Table Widget控件的表格
 class ouwai_table(QTableWidget):
     def __init__(self,parent=None):
@@ -14,18 +15,43 @@ class ouwai_table(QTableWidget):
         self.setWindowIcon(QIcon("a1.png"))
         self.resize(800,500)  #设置表格尺寸
 
-        #===1:创建初始表格
-        self.setColumnCount(24)
-        self.setRowCount(6)
+
+
+        # 设置竖直方向表头不可见
+        self.verticalHeader().setVisible(True)
+        self.setFrameShape(QFrame.NoFrame)
+        # 连接数据库
+        db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
+        # 获取游标、数据
+        cur = db.cursor()
+        cur.execute("SELECT state,name01,gender,age,case_summary,inspection_data,cost,accept_date,contact_information,attending_doctor,satisfaction_degree,complaint,remarks FROM patient_record")
+        data = cur.fetchall()
+        # 数据列名
+        #col_lst = [tup[0] for tup in cur.description]#原始的列名
+        col_lst=['状态','姓名', '性别', '年龄', '病例摘要', '检查资料','费用','受理日期','联系方式','接诊医生','满意度','投诉','备注']
+
+        # 数据的大小
+        row = len(data)
+        vol = len(data[0])
+        print(data)
+        print(col_lst)
+
+        # ===1:创建初始表格
+        self.setColumnCount(vol)
+        self.setRowCount(row)
+        self.settableHeader(col_lst)
+        self.inputcelldata(data)
+
+
         #self.setShowGrid(False) #是否需要显示网格
 
-        self.settableHeader()
-        self.inputcelldata()
+        # self.settableHeader()
+        #self.inputcelldata()
         #self.settableInitData()
         self.settableSelectMode()
         #self.settableHeaderFontColor()
         #self.setCellFontColor()
-        self.setCellAlign()
+        #self.setCellAlign()
         # self.setCellFontSize()
         # self.setCellFontColor()
         #self.setCellSpan()
@@ -61,9 +87,9 @@ class ouwai_table(QTableWidget):
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
     #===2：设置表格的表头名称
-    def settableHeader(self):
+    def settableHeader(self,columnname):
         #columnname = ['A','B','C','D','E']
-        columnname = ['姓名', '性别', '年龄', '身高', '照片','简介','备注']
+        #columnname = ['姓名', '性别', '年龄', '身高', '照片','简介','备注']
         #rowname = ['a','b','c','d','e']
         self.setHorizontalHeaderLabels(columnname)
         #self.setVerticalHeaderLabels(rowname)
@@ -79,16 +105,26 @@ class ouwai_table(QTableWidget):
                 comBox.addItem("男")
                 comBox.addItem("女")
                 self.setCellWidget(i,j,comBox)
-    def inputcelldata(self): #输入数据
-        self.setItem(0,0,QTableWidgetItem("张三"))
-        #self.setItem(0,1,"男")
-        comBox = QComboBox()
-        comBox.addItem("男")
-        comBox.addItem("女")
-        self.setCellWidget(0, 1, comBox)
+    def inputcelldata(self,data): #输入数据
+        row = len(data)
+        vol = len(data[0])
+        for i in range(row):
+            for j in range(vol):
+                temp_data = data[i][j]  # 临时记录，不能直接插入表格
+                if temp_data ==None:
+                    temp_data=""
+                data1 = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+                self.setItem(i, j, data1)
 
-        self.setItem(0,2,QTableWidgetItem(str(25)))
-        self.setItem(0,3,QTableWidgetItem(str(160.85)))
+        # self.setItem(0,0,QTableWidgetItem("张三"))
+        # #self.setItem(0,1,"男")
+        # comBox = QComboBox()
+        # comBox.addItem("男")
+        # comBox.addItem("女")
+        # self.setCellWidget(0, 1, comBox)
+        #
+        # self.setItem(0,2,QTableWidgetItem(str(25)))
+        # self.setItem(0,3,QTableWidgetItem(str(160.85)))
     """在单元格里加入控件QComboBox"""
     def addwidgettocell(self):
         comBox = QComboBox()
