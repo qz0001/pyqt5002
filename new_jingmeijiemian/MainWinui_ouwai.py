@@ -4,7 +4,7 @@ from PyQt5 import QtCore,QtGui,QtWidgets
 
 import sys
 import qtawesome
-from new_jingmeijiemian import MainWinui_ouwai_tabel,MainWinui_ouwai_tab_widget
+from new_jingmeijiemian import MainWinui_ouwai_tabel,MainWinui_ouwai_tab_widget,MainWinui_ouwai_add
 class QTitleLabel(QtWidgets.QLabel):  #这个地方是重写了标签类，不对，是原有的标签类还在，这是自定义的标签类
     """
     新建标题栏标签类
@@ -160,6 +160,8 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.recommend_button_1.setIcon(qtawesome.icon('fa.file-o', color='#6DDF6D'))  # 设置按钮图标
         self.recommend_button_1.setIconSize(QtCore.QSize(30, 30))  # 设置图标大小
         self.recommend_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)  # 设置按钮形式为上图下文
+        self.recommend_button_1.clicked.connect(self.recommend_button_1_Clicked)
+        #上面是按钮点击事件，槽函数微医class的最下面
 
         self.recommend_button_2 = QtWidgets.QToolButton()  # 同上
         self.recommend_button_2.setText("保存")
@@ -503,7 +505,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.ouwai_tab_widget_layout.addWidget(self.ouwai_tab)#表格加入布局
         self.ouwai_tab_widget_layout.setContentsMargins(0,0,0,0)#设置页边距
         self.ouwai_tab_widget_layout.setSpacing(0)#设置控件间距
-        self.right_layout.addWidget(self.ouwai_tab_widget,7, 0, 1,6)
+        self.right_layout.addWidget(self.ouwai_tab_widget,7, 0, 1,6)#加入总布局
 
         """设置关闭大小按钮"""
         self.left_close.setFixedSize(15, 15)  # 设置关闭按钮的大小
@@ -835,6 +837,17 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self._corner_drag = False
         self._bottom_drag = False
         self._right_drag = False
+    def recommend_button_1_Clicked(self):  #跳转窗口
+        print("被点击啦")
+        form_add= QtWidgets.QDialog()
+        ui = MainWinui_ouwai_add.Ui_Dialog()
+        ui.setupUi(form_add)
+        form_add.show()
+        form_add.exec_()
+        self.show()
+
+
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     app.setStyleSheet(open("./UnFrameStyle.qss").read()) #读取css样式文件

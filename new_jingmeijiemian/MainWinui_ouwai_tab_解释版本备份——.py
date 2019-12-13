@@ -783,6 +783,7 @@ class ouwai_table_tab_widget(object):
         self.actionGouj.setText(_translate("QUICreator", "构建项目(&B)"))
         self.action_T.setText(_translate("QUICreator", "帮助文档(&T)"))
         self.action_A.setText(_translate("QUICreator", "关于(&A)"))
+        print("选项卡弹窗")
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
