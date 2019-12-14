@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sys,pymysql
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -143,4 +143,55 @@ class Ui_Dialog(object):
         self.label_5.setText(_translate("Dialog", "病历摘要"))
         self.label_14.setText(_translate("Dialog", "TextLabel"))
         self.label_6.setText(_translate("Dialog", "检查资料"))
+        self.buttonBox.accepted.connect(self.accept) #按钮框buttonBox  按ok时，连接槽函数为accept
+        self.buttonBox.rejected.connect(self.reject)#按钮框buttonBox  按ocancel时，连接槽函数为reject
+
+
+    def accept(self):
+        db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
+        # 获取游标、数据
+        cur = db.cursor() #获取游标
+        state=self.comboBox.currentText()  #下面是读取各个空间中的值
+        name01=self.lineEdit.text()
+        print(name01)
+        gender=self.comboBox_2.currentText()
+        age=self.lineEdit_2.text()
+        case_summary=self.textEdit.toPlainText()
+        inspection_data=self.lineEdit_4.text()
+        cost=self.lineEdit_5.text()
+        print(cost)
+        print(type(cost))
+
+        accept_date=self.dateTimeEdit.dateTime().toString(QtCore.Qt.ISODate)  #获取时间编辑框里面的内容
+        print(accept_date)
+        #print(accept_date.toString(QtCore.Qt.ISODate))
+        contact_information=self.lineEdit_6.text()
+        attending_doctor=self.lineEdit_7.text()
+        company=self.lineEdit_8.text()
+        complaint=self.lineEdit_9.text()
+        remarks=self.lineEdit_10.text()
+
+        # state, name01, gender, age, case_summary,inspection_data, cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))
+        # state, name01, gender, str(age), case_summary,inspection_data, str(cost),accept_date, contact_information, attending_doctor, company, complaint,remarks))
+        sql= 'insert into patient_record(state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);'
+        res = cur.execute(sql,(state, name01, gender, age , case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))  # 执行sql语句，返回sql影响成功的行数
+        db.commit()
+        cur.close()
+        db.close()
+        print(res)
+        print(cur.lastrowid)
+
+    def reject(self):
+        pass
+
+
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    form = QtWidgets.QDialog()
+    window = Ui_Dialog()
+    window.setupUi(form)
+    form.show()
+    sys.exit(app.exec_())
 
