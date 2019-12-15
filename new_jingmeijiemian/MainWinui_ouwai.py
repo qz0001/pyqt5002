@@ -2,7 +2,7 @@
 
 from PyQt5 import QtCore,QtGui,QtWidgets
 
-import sys
+import sys,pymysql
 import qtawesome
 from new_jingmeijiemian import MainWinui_ouwai_tabel,MainWinui_ouwai_tab_widget,MainWinui_ouwai_add
 class QTitleLabel(QtWidgets.QLabel):  #这个地方是重写了标签类，不对，是原有的标签类还在，这是自定义的标签类
@@ -174,6 +174,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.recommend_button_3.setIcon(qtawesome.icon('fa.trash', color='#F7D674'))
         self.recommend_button_3.setIconSize(QtCore.QSize(30, 30))
         self.recommend_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.recommend_button_3.clicked.connect(self.record_delete)
 
         self.recommend_button_4 = QtWidgets.QToolButton()  # 同上
         self.recommend_button_4.setText("接诊")
@@ -845,6 +846,30 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         form_add.show()
         form_add.exec_()
         self.show()
+
+    def record_delete(self):
+        # 是否删除的对话框
+        reply = QtWidgets.QMessageBox.question(self, 'Message', 'Are you sure to delete it ?', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
+            # 获取游标、数据
+            cur = db.cursor()  # 获取游标
+            #MainWinui_ouwai_tabel, MainWinui_ouwai_tab_widget,
+            print(cur.lastrowid)
+            # 当前行
+            row_2 = self.ouwai_tabel.currentRow()
+            del_d = self.ouwai_tabel.item(row_2, 0).text()
+
+            # 在数据库删除数据
+            cur.execute("DELETE FROM patient_record WHERE id =1")
+            db.commit()
+            cur.close()
+            db.close()
+
+            # 删除表格
+            self.ouwai_tabel.removeRow(row_2)
+            self.show()
+
 
 
 

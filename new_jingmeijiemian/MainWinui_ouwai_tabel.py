@@ -24,11 +24,11 @@ class ouwai_table(QTableWidget):
         db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
         # 获取游标、数据
         cur = db.cursor()
-        cur.execute("SELECT state,name01,gender,age,case_summary,inspection_data,cost,accept_date,contact_information,attending_doctor,company,complaint,remarks FROM patient_record")
+        cur.execute("SELECT id,state,name01,gender,age,case_summary,inspection_data,cost,accept_date,contact_information,attending_doctor,company,complaint,remarks FROM patient_record")
         data = cur.fetchall()
         # 数据列名
         #col_lst = [tup[0] for tup in cur.description]#原始的列名
-        col_lst=['状态','姓名', '性别', '年龄', '病例摘要', '检查资料','费用','受理日期','联系方式','接诊医生',' 保险公司','投诉','备注']
+        col_lst=['卡号','状态','姓名', '性别', '年龄', '病例摘要', '检查资料','费用','受理日期','联系方式','接诊医生',' 保险公司','投诉','备注']
 
         # 数据的大小
         row = len(data)

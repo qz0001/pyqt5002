@@ -3,13 +3,14 @@
 多窗口反复切换，只用PyQt5实现
 '''
 import sys  # 导入系统
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton,QMessageBox
 
 
 class FirstUi(QMainWindow):  # 第一个窗口类
     def __init__(self):
         super(FirstUi, self).__init__()
         self.init_ui()
+        reply = QMessageBox.question(self, 'Message', 'Are you sure to delete it ?',QMessageBox.Yes |QMessageBox.No,QMessageBox.No)
 
     def init_ui(self):
         self.resize(300, 200)  # 设置窗口大小

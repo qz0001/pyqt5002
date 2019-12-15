@@ -159,6 +159,10 @@ class Ui_Dialog(object):
         case_summary=self.textEdit.toPlainText()
         inspection_data=self.lineEdit_4.text()
         cost=self.lineEdit_5.text()
+        if len(cost)==0:
+            cost=0
+
+
         print(cost)
         print(type(cost))
 
@@ -174,7 +178,7 @@ class Ui_Dialog(object):
         # state, name01, gender, age, case_summary,inspection_data, cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))
         # state, name01, gender, str(age), case_summary,inspection_data, str(cost),accept_date, contact_information, attending_doctor, company, complaint,remarks))
         sql= 'insert into patient_record(state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);'
-        res = cur.execute(sql,(state, name01, gender, age , case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))  # 执行sql语句，返回sql影响成功的行数
+        res = cur.execute(sql,(state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))  # 执行sql语句，返回sql影响成功的行数
         db.commit()
         cur.close()
         db.close()
@@ -182,7 +186,7 @@ class Ui_Dialog(object):
         print(cur.lastrowid)
 
     def reject(self):
-        pass
+        print(len(self.lineEdit_5.text()))
 
 
 
