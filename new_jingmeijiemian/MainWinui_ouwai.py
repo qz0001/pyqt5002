@@ -7,7 +7,7 @@ import qtawesome
 from new_jingmeijiemian import MainWinui_ouwai_tabel,MainWinui_ouwai_tab_widget,MainWinui_ouwai_add
 class QTitleLabel(QtWidgets.QLabel):  #这个地方是重写了标签类，不对，是原有的标签类还在，这是自定义的标签类
     """
-    新建标题栏标签类
+    新建标题栏标签类ceshi0001
     """
     def __init__(self, *args):
         super(QTitleLabel, self).__init__(*args) #继承原有标签类属性
