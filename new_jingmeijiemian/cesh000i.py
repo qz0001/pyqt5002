@@ -1,54 +1,47 @@
 # -*- coding: utf-8 -*-
-'''
-多窗口反复切换，只用PyQt5实现
-'''
-import sys  # 导入系统
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton,QMessageBox
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 
-class FirstUi(QMainWindow):  # 第一个窗口类
-    def __init__(self):
-        super(FirstUi, self).__init__()
-        self.init_ui()
-        reply = QMessageBox.question(self, 'Message', 'Are you sure to delete it ?',QMessageBox.Yes |QMessageBox.No,QMessageBox.No)
+class DateDialog(QDialog):
+    Signal_OneParameter = pyqtSignal(str) #自定义一个带参的信号
 
-    def init_ui(self):
-        self.resize(300, 200)  # 设置窗口大小
-        self.setWindowTitle('First Ui')  # 设置窗口标题
-        self.btn = QPushButton('jump', self)  # 设置按钮和按钮名称
-        self.btn.setGeometry(50, 100, 100, 50)  # 前面是按钮左上角坐标，后面是窗口大小
-        self.btn.clicked.connect(self.slot_btn_function)  # 将信号连接到槽
+    def __init__(self, parent=None):
+        super(DateDialog, self).__init__(parent)
+        self.setWindowTitle('子窗口：用来发射信号')
 
-    def slot_btn_function(self):
-        self.hide()  # 隐藏此窗口
-        self.s = SecondUi()  # 将第二个窗口换个名字
-        self.s.show()  # 经第二个窗口显示出来
+        # 在布局中添加部件
+        layout = QVBoxLayout(self)
 
+        self.label = QLabel(self)
+        self.label.setText('前者发射内置信号\n后者发射自定义信号')
 
-class SecondUi(QWidget):  # 建立第二个窗口的类
-    def __init__(self):
-        super(SecondUi, self).__init__()
-        self.init_ui()
+        self.datetime_inner = QDateTimeEdit(self)
+        self.datetime_inner.setCalendarPopup(True)
+        self.datetime_inner.setDateTime(QDateTime.currentDateTime())
 
-    def init_ui(self):
-        self.resize(500, 350)  # 设置第二个窗口代码
-        self.setWindowTitle('Second Ui')  # 设置第二个窗口标题
-        self.btn = QPushButton('jump', self)  # 设置按钮和按钮名称
-        self.btn.setGeometry(150, 150, 100, 50)  # 前面是按钮左上角坐标，后面是按钮大小
-        self.btn.clicked.connect(self.slot_btn_function)  # 将信号连接到槽
+        self.datetime_emit = QDateTimeEdit(self)
+        self.datetime_emit.setCalendarPopup(True)
+        self.datetime_emit.setDateTime(QDateTime.currentDateTime())
 
-    def slot_btn_function(self):
-        self.hide()  # 隐藏此窗口
-        self.f = FirstUi()  # 将第一个窗口换个名字
-        self.f.show()  # 将第一个窗口显示出来
+        layout.addWidget(self.label)
+        layout.addWidget(self.datetime_inner)
+        layout.addWidget(self.datetime_emit)
 
+        # 使用两个button(ok和cancel)分别连接accept()和reject()槽函数
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel,
+            Qt.Horizontal, self)
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
 
-def main():
-    app = QApplication(sys.argv)
-    w = FirstUi()  # 将第一和窗口换个名字
-    w.show()  # 将第一和窗口换个名字显示出来
-    sys.exit(app.exec_())  # app.exet_()是指程序一直循环运行直到主窗口被关闭终止进程（如果没有这句话，程序运行时会一闪而过）
+        self.datetime_emit.dateTimeChanged.connect(self.emit_signal)
+
+    def emit_signal(self):
+        date_str = self.datetime_emit.dateTime().toString()
+        self.Signal_OneParameter.emit(date_str)    #通过内置信号发送自自定义的信号
 
 
-if __name__ == '__main__':  # 只有在本py文件中才能用，被调用就不执行
-    main()

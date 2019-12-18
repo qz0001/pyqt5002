@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys,pymysql
+from new_jingmeijiemian import MainWinui_ouwai_tabel
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -122,7 +123,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "添加客户信息"))
         self.comboBox.setItemText(0, _translate("Dialog", "在院"))
         self.comboBox.setItemText(1, _translate("Dialog", "出院"))
         self.comboBox.setItemText(2, _translate("Dialog", "其他"))
@@ -148,11 +149,11 @@ class Ui_Dialog(object):
 
 
     def accept(self):
-        db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
-        # 获取游标、数据
-        cur = db.cursor() #获取游标
+
+
         state=self.comboBox.currentText()  #下面是读取各个空间中的值
         name01=self.lineEdit.text()
+
         print(name01)
         gender=self.comboBox_2.currentText()
         age=self.lineEdit_2.text()
@@ -161,11 +162,6 @@ class Ui_Dialog(object):
         cost=self.lineEdit_5.text()
         if len(cost)==0:
             cost=0
-
-
-        print(cost)
-        print(type(cost))
-
         accept_date=self.dateTimeEdit.dateTime().toString(QtCore.Qt.ISODate)  #获取时间编辑框里面的内容
         print(accept_date)
         #print(accept_date.toString(QtCore.Qt.ISODate))
@@ -178,12 +174,33 @@ class Ui_Dialog(object):
         # state, name01, gender, age, case_summary,inspection_data, cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))
         # state, name01, gender, str(age), case_summary,inspection_data, str(cost),accept_date, contact_information, attending_doctor, company, complaint,remarks))
         sql= 'insert into patient_record(state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);'
-        res = cur.execute(sql,(state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))  # 执行sql语句，返回sql影响成功的行数
-        db.commit()
-        cur.close()
-        db.close()
-        print(res)
-        print(cur.lastrowid)
+        if len(name01)==0:
+            print("姓名不能为空")
+
+        else:
+            db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
+            # 获取游标、数据
+            cur = db.cursor()  # 获取游标
+
+            res = cur.execute(sql,[state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks])  # 执行sql语句，返回sql影响成功的行数
+            db.commit()
+            cur.close()
+            db.close()
+            self.lineEdit.setText(None) #下面是初始化控件内容
+            self.lineEdit_2.setText(None)
+            self.textEdit.setPlainText(None)
+            self.lineEdit_4.setText(None)
+            self.lineEdit_5.setText(None)
+            self.lineEdit_6.setText(None)
+            self.lineEdit_7.setText(None)
+            self.lineEdit_8.setText(None)
+            self.lineEdit_9.setText(None)
+            self.lineEdit_10.setText(None)
+
+
+            print(res)
+            print(cur.lastrowid)
+            #MainWinui_ouwai_tabel.ouwai_table.creat_table_view()
 
     def reject(self):
         print(len(self.lineEdit_5.text()))

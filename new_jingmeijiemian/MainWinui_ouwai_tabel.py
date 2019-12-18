@@ -20,7 +20,9 @@ class ouwai_table(QTableWidget):
         # 设置竖直方向表头不可见
         self.verticalHeader().setVisible(True)
         self.setFrameShape(QFrame.NoFrame)
-        # 连接数据库
+        self.creat_table_view()
+    def creat_table_view(self):
+    # 连接数据库
         db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
         # 获取游标、数据
         cur = db.cursor()

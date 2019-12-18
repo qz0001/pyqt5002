@@ -168,6 +168,8 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.recommend_button_2.setIcon(qtawesome.icon('fa.save', color='#aaaaff'))
         self.recommend_button_2.setIconSize(QtCore.QSize(30, 30))
         self.recommend_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.recommend_button_2.clicked.connect(self.ouwai_tabel_Save)
+        self.recommend_button_2.clicked.connect(self.record_refresh)
 
         self.recommend_button_3 = QtWidgets.QToolButton()  # 同上
         self.recommend_button_3.setText("删除")
@@ -184,13 +186,20 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
 
         self.recommend_button_5 = QtWidgets.QToolButton()  # 同上
         self.recommend_button_5.setText("预约")
-        self.recommend_button_5.setIcon(qtawesome.icon('fa.phone-square', color='green'))
+        self.recommend_button_5.setIcon(qtawesome.icon('fa.phone-square', color='blue'))
         self.recommend_button_5.setIconSize(QtCore.QSize(30, 30))
         self.recommend_button_5.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
+        self.recommend_button_7 = QtWidgets.QToolButton()  # 同上
+        self.recommend_button_7.setText("刷新")
+        self.recommend_button_7.setIcon(qtawesome.icon('fa.refresh', color='green'))
+        self.recommend_button_7.setIconSize(QtCore.QSize(30, 30))
+        self.recommend_button_7.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.recommend_button_7.clicked.connect(self.record_refresh)
+
         self.recommend_button_6 = QtWidgets.QToolButton()  # 同上
         self.recommend_button_6.setText("退出")
-        self.recommend_button_6.setIcon(qtawesome.icon('fa.sign-out', color='green'))
+        self.recommend_button_6.setIcon(qtawesome.icon('fa.sign-out', color='grea'))
         self.recommend_button_6.setIconSize(QtCore.QSize(30, 30))
         self.recommend_button_6.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
@@ -220,6 +229,11 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.line5.setFrameShape(QtWidgets.QFrame.VLine)
         self.line5.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line5.setObjectName("line")
+
+        self.line6 = QtWidgets.QFrame()  # 3.在布局窗口创建垂直分割线1
+        self.line6.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line6.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line6.setObjectName("line")
         '''按钮和分割线 加入水平布局'''
         self.right_recommend_layout.addWidget(self.recommend_button_1)  # 向“推荐专辑”网格布局中加入按钮
         self.right_recommend_layout.addWidget(self.line1)  # 3.1垂直分割线加入加入布局
@@ -231,6 +245,8 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.right_recommend_layout.addWidget(self.line4)  # 3.1垂直分割线加入加入布局
         self.right_recommend_layout.addWidget(self.recommend_button_5)
         self.right_recommend_layout.addWidget(self.line5)  # 3.1垂直分割线加入加入布局
+        self.right_recommend_layout.addWidget(self.recommend_button_7)
+        self.right_recommend_layout.addWidget(self.line6)  # 3.1垂直分割线加入加入布局
         self.right_recommend_layout.addWidget(self.recommend_button_6)
         spacer001 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.right_recommend_layout.addItem(spacer001)  # 记住这里是用addItem，，，不是用addWidget
@@ -490,6 +506,7 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         self.ouwai_tabel_widget_layout.addWidget(self.ouwai_tabel)
         self.ouwai_tabel_widget_layout.setContentsMargins(0, 0, 0, 0)  # 设置页边距为0
         self.ouwai_tabel_widget_layout.setSpacing(0)  # 设置控件间隔为0
+        self.ouwai_tabel.clicked.connect(self.ouwai_tabel_Clicked)    #点击事件
 
         self.right_layout.addWidget(self.ouwai_tabel_widget, 5, 0, 1, 9) #表格加入布局
 
@@ -847,28 +864,155 @@ class MainUi(QtWidgets.QMainWindow):#   主窗体类
         form_add.exec_()
         self.show()
 
-    def record_delete(self):
-        # 是否删除的对话框
-        reply = QtWidgets.QMessageBox.question(self, 'Message', 'Are you sure to delete it ?', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
-        if reply == QtWidgets.QMessageBox.Yes:
+    def record_delete(self):  #删除按钮点击事件
+        row_2 = self.ouwai_tabel.currentRow()
+        if row_2 == -1:
+            reply2 = QtWidgets.QMessageBox.question(self, 'Message', '请先选择被删除项目',
+                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                    QtWidgets.QMessageBox.No)
+        # # 是否删除的对话框
+        else:
+            reply = QtWidgets.QMessageBox.question(self, 'Message', 'Are you sure to delete it ?', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.Yes:
+                #当前行
+                print(self.ouwai_tabel.currentRow())
+                row_2 = self.ouwai_tabel.currentRow()
+                del_d = self.ouwai_tabel.item(row_2, 0).text()
+                # print(row_2)
+                # print(type(del_d))
+                db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
+                # 获取游标、数据
+                cur = db.cursor()  # 获取游标
+                #在数据库删除数据
+                sql = 'DELETE FROM patient_record WHERE id =%s;'
+                #sql = 'select * FROM patient_record;'
+                cur.execute(sql,[del_d])  # 执行sql语句，返回sql影响成功的行数
+                db.commit()
+                cur.close()
+                db.close()
+                self.show()
+                # 删除表格
+                self.ouwai_tabel.removeRow(row_2)
+#表格点击事件
+
+    def ouwai_tabel_Clicked(self):  # 点击表格自动在tab1里面显示记录详细内容
+        row_2 = self.ouwai_tabel.currentRow()
+        if row_2 == -1:
+            pass
+        else:
+
+            # 当前行
+            print("当前行数",self.ouwai_tabel.currentRow())
+            row_2 = self.ouwai_tabel.currentRow()
+            del_d = self.ouwai_tabel.item(row_2, 0).text()
+            global_id=del_d
+
+            print("当前id",del_d)
             db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
             # 获取游标、数据
             cur = db.cursor()  # 获取游标
-            #MainWinui_ouwai_tabel, MainWinui_ouwai_tab_widget,
-            print(cur.lastrowid)
-            # 当前行
-            row_2 = self.ouwai_tabel.currentRow()
-            del_d = self.ouwai_tabel.item(row_2, 0).text()
-
             # 在数据库删除数据
-            cur.execute("DELETE FROM patient_record WHERE id =1")
+            sql = 'select * FROM patient_record WHERE id =%s;'
+            # sql = 'select * FROM patient_record;'
+            cur.execute(sql, [del_d])  # 执行sql语句，返回sql影响成功的行数
+            data = cur.fetchall()
+            print(data[0][2])
+            print(type(data[0][7]))
+            print(data[0][8])
+            if data[0][1]=="在院":
+                state_index=0
+            elif data[0][1]=="出院":
+                state_index = 1
+            elif data[0][1]=="其他":
+                state_index = 2
+            if data[0][3]=="男":
+                gender_index=0
+            elif data[0][3]=="女":
+                gender_index = 1
+            elif data[0][3]=="其他":
+                gender_index = 2
+            print("数据库中id",data[0][0])
+            self.ouwai_tab.lineEdit_id.setText(str(data[0][0]))   #必须用字符串形式，整数不行
+            self.ouwai_tab.comboBox.setCurrentIndex(state_index)   #设置内容
+            self.ouwai_tab.lineEdit.setText(data[0][2])  # 下面是通过查询表格--设置控件内容
+            self.ouwai_tab.comboBox_2.setCurrentIndex(gender_index)
+
+            self.ouwai_tab.lineEdit_2.setText(data[0][4])
+
+            self.ouwai_tab.textEdit.setPlainText(data[0][5])
+            self.ouwai_tab.lineEdit_4.setText(data[0][6])
+            self.ouwai_tab.lineEdit_5.setText(str(data[0][7]))
+            self.ouwai_tab.dateTimeEdit.setDateTime(data[0][8])
+            self.ouwai_tab.lineEdit_6.setText(data[0][9])
+            self.ouwai_tab.lineEdit_7.setText(data[0][10])
+            self.ouwai_tab.lineEdit_8.setText(data[0][11])
+            self.ouwai_tab.lineEdit_9.setText(data[0][12])
+            self.ouwai_tab.lineEdit_10.setText(data[0][13])
+            print(data)
             db.commit()
             cur.close()
             db.close()
-
-            # 删除表格
-            self.ouwai_tabel.removeRow(row_2)
             self.show()
+
+    def ouwai_tabel_Save(self):
+        id=self.ouwai_tab.lineEdit_id.text()
+        state = self.ouwai_tab.comboBox.currentText()  # 下面是读取各个空间中的值
+        name01 = self.ouwai_tab.lineEdit.text()
+
+        print("当前姓名",name01)
+        gender = self.ouwai_tab.comboBox_2.currentText()
+        age = self.ouwai_tab.lineEdit_2.text()
+        case_summary = self.ouwai_tab.textEdit.toPlainText()
+        inspection_data = self.ouwai_tab.lineEdit_4.text()
+        cost = self.ouwai_tab.lineEdit_5.text()
+        if len(cost) == 0:
+            cost = 0
+        accept_date = self.ouwai_tab.dateTimeEdit.dateTime().toString(QtCore.Qt.ISODate)  # 获取时间编辑框里面的内容
+        print(accept_date)
+        # print(accept_date.toString(QtCore.Qt.ISODate))
+        contact_information = self.ouwai_tab.lineEdit_6.text()
+        attending_doctor = self.ouwai_tab.lineEdit_7.text()
+        company = self.ouwai_tab.lineEdit_8.text()
+        complaint = self.ouwai_tab.lineEdit_9.text()
+        remarks = self.ouwai_tab.lineEdit_10.text()
+
+        # state, name01, gender, age, case_summary,inspection_data, cost,accept_date, contact_information, attending_doctor, company, complaint,remarks))
+        # state, name01, gender, str(age), case_summary,inspection_data, str(cost),accept_date, contact_information, attending_doctor, company, complaint,remarks))
+        #sql = 'insert into patient_record(state, name01, gender, age, case_summary,inspection_data,cost,accept_date, contact_information, attending_doctor, company, complaint,remarks) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);'
+        sql = 'update patient_record set state=%s, name01=%s, gender=%s, age=%s, case_summary=%s,inspection_data=%s,cost=%s,accept_date=%s, contact_information=%s, attending_doctor=%s, company=%s, complaint=%s,remarks=%s where id =%s;'
+
+        if len(name01) == 0:
+            print("姓名不能为空")
+
+        else:
+            db = pymysql.connect("116.62.199.133", "root", "321456", "ouwai", charset='utf8')
+            # 获取游标、数据
+            cur = db.cursor()  # 获取游标
+
+            res = cur.execute(sql, [state, name01, gender, age, case_summary, inspection_data, cost, accept_date,
+                                    contact_information, attending_doctor, company, complaint,
+                                    remarks,id])  # 执行sql语句，返回sql影响成功的行数
+            db.commit()
+            cur.close()
+            db.close()
+            self.ouwai_tab.lineEdit.setText(None)  # 下面是初始化控件内容
+            self.ouwai_tab.lineEdit_2.setText(None)
+            self.ouwai_tab.textEdit.setPlainText(None)
+            self.ouwai_tab.lineEdit_4.setText(None)
+            self.ouwai_tab.lineEdit_5.setText(None)
+            self.ouwai_tab.lineEdit_6.setText(None)
+            self.ouwai_tab.lineEdit_7.setText(None)
+            self.ouwai_tab.lineEdit_8.setText(None)
+            self.ouwai_tab.lineEdit_9.setText(None)
+            self.ouwai_tab.lineEdit_10.setText(None)
+    def record_refresh(self):
+        self.ouwai_tabel.creat_table_view()
+
+
+
+
+
+
 
 
 
